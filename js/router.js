@@ -42,7 +42,7 @@ async function spaHandler (location) {
           break
         }
         case 'en': {
-          changeAuthLink('Register', '#register')
+          changeAuthLink('Test', '#register')
           break
         }
       }
