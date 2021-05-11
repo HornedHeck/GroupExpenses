@@ -1,8 +1,4 @@
-import {
-  addNewListItemDB,
-  getInfoDB,
-  updateDataDB,
-} from '../utils/FirebaseUtils.js'
+import { FirebaseUtils } from '../utils/FirebaseUtils.js'
 
 export const EditBill = {
   async handleEditExpense () {
@@ -61,7 +57,7 @@ export const EditBill = {
   },
   async fillEditFields () {
     const uid = localStorage.getItem('expenseUIDEdit')
-    const expense = await getInfoDB(`expenses/${uid}/`)
+    const expense = await FirebaseUtils.getInfoDB(`expenses/${uid}/`)
 
     Object.entries(expense.participants).
       forEach(([_, { email, hasPaid, sum }]) => {
@@ -90,16 +86,12 @@ export const EditBill = {
     const uid = localStorage.getItem('expenseUIDEdit')
 
     const participantsHaveToPay = Object.entries(this.participantsList).
-      reduce((haveToPay, [
-        email, {
-          sum,
-          hasPaid,
-        }]) => {
+      reduce((haveToPay, [email, { sum, hasPaid }]) => {
         if (hasPaid) return haveToPay
         return haveToPay + +sum
       }, 0)
 
-    await updateDataDB(`expenses/${uid}`, {
+    await FirebaseUtils.updateDataDB(`expenses/${uid}`, {
       name: this.name.value,
       totalAmount: +this.totalAmount.value,
       photo: base64Photo,
@@ -108,7 +100,7 @@ export const EditBill = {
     })
     await Object.entries(this.participantsList).
       forEach(async ([email, { sum, hasPaid = false }]) => {
-        await addNewListItemDB(`expenses/${uid}/participants/`, {
+        await FirebaseUtils.addNewListItemDB(`expenses/${uid}/participants/`, {
           email,
           sum,
           hasPaid,

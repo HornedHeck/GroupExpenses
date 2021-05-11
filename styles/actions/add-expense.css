@@ -89,7 +89,7 @@
 
 .expense-photo-field {
     display: flex;
-    gap: 0px;
+    gap: 0;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;

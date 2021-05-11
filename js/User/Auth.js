@@ -1,13 +1,14 @@
-import { addNewListItemDB } from '../utils/FirebaseUtils.js'
+import { FirebaseUtils } from '../utils/FirebaseUtils.js'
 
 export class Auth {
   constructor () {
     this.loginHandler = this.loginHandler.bind(this)
     this.registerHandler = this.registerHandler.bind(this)
 
-    firebase.auth().onAuthStateChanged((user) => user
-      ? this.stateChangeHandler(true)
-      : this.stateChangeHandler(false))
+    firebase.auth().
+      onAuthStateChanged((user) => user
+        ? this.stateChangeHandler(true)
+        : this.stateChangeHandler(false))
   }
 
   setForm (form) {
@@ -40,22 +41,22 @@ export class Auth {
   }
 
   loginHandler () {
-    firebase.auth().signInWithEmailAndPassword(
-      this.emailField.value,
-      this.passwordField.value,
-    ).catch((error) => this.errorField.textContent = error.message)
+    firebase.auth().
+      signInWithEmailAndPassword(this.emailField.value,
+        this.passwordField.value).
+      catch((error) => this.errorField.textContent = error.message)
   }
 
   registerHandler () {
     firebase.auth().
-      createUserWithEmailAndPassword(
-        this.emailField.value,
-        this.passwordField.value,
-      ).then((userCredential) => {
-      addNewListItemDB(`users/`, {
-        email: userCredential.user.email,
-      })
-    }).catch((error) => this.errorField.textContent = error.message)
+      createUserWithEmailAndPassword(this.emailField.value,
+        this.passwordField.value).
+      then((userCredential) => {
+        FirebaseUtils.addNewListItemDB(`users/`, {
+          email: userCredential.user.email,
+        })
+      }).
+      catch((error) => this.errorField.textContent = error.message)
   }
 
   async logoutHandler () {

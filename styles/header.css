@@ -40,13 +40,12 @@
     text-align: center;
     padding: 5px 10px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: min(14px , 2.5vw);
     cursor: pointer;
 
     background-color: var(--color-primary);
     color: var(--font-color);
     outline: none;
-    border: none;
     border: 2px solid var(--font-color);
 }
 
@@ -107,10 +106,10 @@
 
     .header__select {
         padding: 3px 7px;
-        font-size: 12px;
+        font-size: min(12px , 2vw);
     }
 
     .header__link {
-        font-size: 12px;
+        font-size: min(12px , 2vw);
     }
 }

@@ -1,21 +1,5 @@
-import {
-  addNewListItemDB,
-  checkUserExistence,
-  deleteDataDB,
-  getInfoDB,
-  getParticipantInfo,
-  getUserUID,
-  updateDataDB,
-} from '../utils/FirebaseUtils.js'
-
-import {
-  getInfoParticipant,
-  getTemplateExpensesToPay,
-  getTemplateParticipants,
-  getTemplateRecentPayments,
-  getTemplateUserCreatedExpenses,
-} from './Templates.js'
-
+import { FirebaseUtils } from '../utils/FirebaseUtils.js'
+import { Templates } from './Templates.js'
 import { AddBill } from './AddBill.js'
 import { DeleteBill } from './DeleteBill.js'
 import { EditBill } from './EditBill.js'
@@ -43,7 +27,7 @@ export class GroupBill {
     e.preventDefault()
     try {
       const email = this.participantEmail.value
-      await checkUserExistence(email)
+      await FirebaseUtils.checkUserExistence(email)
       if (this.participantsList[email]) {
         alert('User already in list')
         return
@@ -61,23 +45,23 @@ export class GroupBill {
   }
 
   checkCorrectFields () {
-    this.createBtn.disabled = !this.checkOverallAmountCover() ||
-      !this.checkInputsFilled() ||
-      this.checkParticipantsValue()
+    if (!this.checkOverallAmountCover() || !this.checkInputsFilled() ||
+      this.checkParticipantsValue()) {
+      this.createBtn.disabled = true
+    } else {
+      this.createBtn.disabled = false
+    }
   }
 
   distributeAmount (e) {
     let overall = +this.totalAmount.value
     let totalParticipants = 0
-
     // remove users that have paid from overall amount
-    Object.entries(this.participantsList).forEach(([
-      _, {
-        sum,
-        hasPaid,
-      }]) => hasPaid ? overall -= +sum : totalParticipants++)
+    Object.entries(this.participantsList).
+      forEach(([_, { sum, hasPaid }]) => hasPaid
+        ? overall -= +sum
+        : totalParticipants++)
     const evenPart = overall / totalParticipants
-
     // update sums in list
     Object.entries(this.participantsList).forEach(([email, { _, hasPaid }]) => {
       if (hasPaid) return
@@ -102,7 +86,7 @@ export class GroupBill {
   }
 
   updateParticipantsElement () {
-    this.participantsListElement.innerHTML = getTemplateParticipants(
+    this.participantsListElement.innerHTML = Templates.getTemplateParticipants(
       this.participantsList)
     this.participantsInputs = document.querySelectorAll(
       '.participants-item__amount')
@@ -128,8 +112,9 @@ export class GroupBill {
       '.user-created-expenses__sum')
 
     try {
-      const [list, totalIncome] = await getTemplateUserCreatedExpenses(amount)
-      if (list === '') throw new Error('No data')
+      const [list, totalIncome] = await Templates.getTemplateUserCreatedExpenses(
+        amount)
+      if (list == '') throw new Error('No data')
 
       listElement.innerHTML = list
       userCreatedExpensesSum.innerHTML = totalIncome + ' $'
@@ -152,7 +137,8 @@ export class GroupBill {
       '.expenses-to-pay__sum')
 
     try {
-      const [list, totalHaveToPay] = await getTemplateExpensesToPay(amount)
+      const [list, totalHaveToPay] = await Templates.getTemplateExpensesToPay(
+        amount)
       if (list == '') throw new Error('No data')
 
       listElement.innerHTML = list
@@ -175,12 +161,13 @@ export class GroupBill {
     const listElement = document.querySelector('.recent-payments__list')
 
     const currentUserEmail = firebase.auth().currentUser.email
-    const [userUID, {}] = await getUserUID(currentUserEmail)
-    const recentPaymentsList = await getInfoDB(`users/${userUID}/payments/`)
-    listElement.innerHTML = getTemplateRecentPayments(
-      recentPaymentsList,
-      amount,
-    )
+    const [userUID, {}] = await FirebaseUtils.getUserUID(currentUserEmail)
+    const recentPaymentsList = await FirebaseUtils.getInfoDB(
+      `users/${userUID}/payments/`)
+    const list = Templates.getTemplateRecentPayments(recentPaymentsList,
+      amount)
+
+    listElement.innerHTML = list
   }
 
   handleHideButton (cardName) {
@@ -252,7 +239,7 @@ export class GroupBill {
   async handleInfoExpense () {
     this.participantsList = {}
     const expenseUID = localStorage.getItem('expenseUIDInfo')
-    const expense = await getInfoDB(`expenses/${expenseUID}/`)
+    const expense = await FirebaseUtils.getInfoDB(`expenses/${expenseUID}/`)
 
     Object.entries(expense.participants).
       forEach(([_, { email, hasPaid, sum }]) => {
@@ -260,7 +247,7 @@ export class GroupBill {
       })
     const expenseInfoParticipants = document.querySelector(
       '.expense-info__participants')
-    expenseInfoParticipants.innerHTML = getInfoParticipant(
+    expenseInfoParticipants.innerHTML = Templates.getInfoParticipant(
       this.participantsList)
 
     document.querySelector('.expense-info__name').textContent = expense.name
@@ -274,23 +261,24 @@ export class GroupBill {
 
         const currentUserEmail = firebase.auth().currentUser.email
 
-        const [userUID, {}] = await getUserUID(currentUserEmail)
-        const [ownerUID, {}] = await getUserUID(expense.ownerEmail)
+        const [userUID, {}] = await FirebaseUtils.getUserUID(currentUserEmail)
+        const [ownerUID, {}] = await FirebaseUtils.getUserUID(
+          expense.ownerEmail)
 
-        const [_, { sum }] = await getParticipantInfo(expenseUID,
+        const [_, { sum }] = await FirebaseUtils.getParticipantInfo(expenseUID,
           currentUserEmail)
 
         await this.updateUserPaidStatus(expenseUID, currentUserEmail)
         await this.updateParticipantsHaveToPay(expenseUID, sum)
 
-        await addNewListItemDB(`users/${userUID}/payments/`, {
+        await FirebaseUtils.addNewListItemDB(`users/${userUID}/payments/`, {
           expenseName: expense.name,
           isIncome: false,
           amount: sum,
           date: new Date().toLocaleDateString(),
         })
 
-        await addNewListItemDB(`users/${ownerUID}/payments/`, {
+        await FirebaseUtils.addNewListItemDB(`users/${ownerUID}/payments/`, {
           expenseName: expense.name,
           isIncome: true,
           amount: sum,
@@ -303,19 +291,21 @@ export class GroupBill {
   }
 
   async updateUserPaidStatus (expenseUID, participantEmail) {
-    const [userUID] = await getParticipantInfo(expenseUID, participantEmail)
-    return await updateDataDB(`expenses/${expenseUID}/participants/${userUID}/`,
-      {
+    const [userUID] = await FirebaseUtils.getParticipantInfo(expenseUID,
+      participantEmail)
+    return await FirebaseUtils.updateDataDB(
+      `expenses/${expenseUID}/participants/${userUID}/`, {
         hasPaid: true,
       })
   }
 
   async updateParticipantsHaveToPay (expenseUID, sum) {
-    const haveToPay = await getInfoDB(
+    const haveToPay = await FirebaseUtils.getInfoDB(
       `expenses/${expenseUID}/participantsHaveToPay`)
     const newValue = haveToPay - sum
-    if (newValue <= 0) return await deleteDataDB(`expenses/${expenseUID}/`)
-    return await updateDataDB(`expenses/${expenseUID}/`, {
+    if (newValue <= 0) return await FirebaseUtils.deleteDataDB(
+      `expenses/${expenseUID}/`)
+    return await FirebaseUtils.updateDataDB(`expenses/${expenseUID}/`, {
       participantsHaveToPay: newValue,
     })
   }

@@ -1,8 +1,8 @@
 .expenses-to-pay__sum {
     color: var(--attention-color);
     font-weight: 500;
-    font-size: 20px;
-    text-shadow: 0px 0px 1px var(--color-shadow);
+    font-size: min(20px , 5vw);
+    text-shadow: 0 0 1px var(--color-shadow);
 }
 
 .expenses-to-pay__list {
@@ -21,9 +21,9 @@
     border-radius: 10px;
 
     background-color: var(--color-secondary);
-    box-shadow: 0px 0px 5px var(--color-shadow);
+    box-shadow: 0 0 5px var(--color-shadow);
 
-    font-size: 20px;
+    font-size: min(20px , 5vw);
     color: var(--font-color);
 
     cursor: pointer;
@@ -31,7 +31,7 @@
 
 @media screen and (max-width: 1000px) {
     .expense-to-pay__item {
-        font-size: 18px;
+        font-size: min(18px , 4vw);
     }
 }
 
@@ -39,7 +39,7 @@
     .expense-to-pay__item {
         align-items: flex-start;
         flex-direction: column;
-        font-size: 16px;
+        font-size: min(16px , 3vw);
     }
 }
 
@@ -52,7 +52,7 @@
     margin-top: 20px;
     padding: 5px 8px;
     background-color: var(--color-primary);
-    box-shadow: 0px 0px 2px var(--color-shadow);
+    box-shadow: 0 0 2px var(--color-shadow);
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;

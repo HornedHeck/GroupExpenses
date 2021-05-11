@@ -4,12 +4,11 @@
 .content-wrapper {
     max-width: 700px;
     width: 100%;
-    margin: 0 auto;
-    margin-top: 50px;
-    padding: 0px 20px 20px;
+    margin: 50px auto 0;
+    padding: 0 20px 20px;
 }
 
 .content-title {
-    font-size: 24px;
+    font-size: min(20px , 5vw);
     font-weight: 500;
 }

@@ -1,4 +1,4 @@
-import { addNewListItemDB } from '../utils/FirebaseUtils.js'
+import { FirebaseUtils } from '../utils/FirebaseUtils.js'
 
 export const AddBill = {
   handleAddExpense () {
@@ -42,7 +42,8 @@ export const AddBill = {
     this.checkCorrectFields()
   },
   checkInputsFilled () {
-    return !(this.name.value === '' || this.totalAmount.value === '')
+    if (this.name.value === '' || this.totalAmount.value === '') return false
+    return true
   },
   async createHandler (e) {
     e.preventDefault()
@@ -54,7 +55,7 @@ export const AddBill = {
       base64Photo = ''
     }
 
-    const newItemKey = await addNewListItemDB(`expenses/`, {
+    const newItemKey = await FirebaseUtils.addNewListItemDB(`expenses/`, {
       name: this.name.value,
       totalAmount: +this.totalAmount.value,
       photo: base64Photo,
@@ -64,9 +65,8 @@ export const AddBill = {
     })
     await Object.entries(this.participantsList).
       forEach(async ([email, { sum, hasPaid = false }]) => {
-        await addNewListItemDB(
-          `expenses/${newItemKey}/participants/`,
-          {
+        await FirebaseUtils.addNewListItemDB(
+          `expenses/${newItemKey}/participants/`, {
             email,
             sum,
             hasPaid,

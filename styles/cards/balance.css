@@ -6,14 +6,14 @@
 }
 
 .balance {
-    font-size: 20px;
+    font-size: min(20px , 5vw);
     color: var(--font-color);
 }
 
 .balance__label {
     padding: 6px 7px;
     border-radius: 10px;
-    box-shadow: 0px 0px 1px var(--color-shadow);
+    box-shadow: 0 0 1px var(--color-shadow);
 }
 
 .others-owe-me__label {

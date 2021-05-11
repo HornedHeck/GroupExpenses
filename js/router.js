@@ -42,7 +42,7 @@ async function spaHandler (location) {
           break
         }
         case 'en': {
-          changeAuthLink('Test', '#register')
+          changeAuthLink('Register', '#register')
           break
         }
       }
@@ -55,11 +55,9 @@ async function spaHandler (location) {
       }
 
       spa.innerHTML = await getPage(viewName)
-
       groupBill.fillUserCreatedExpenses(3)
       groupBill.fillExpensesToPay(3)
       groupBill.fillRecentPayments(5)
-
       groupBill.handleHideButton('user-created-expenses')
       groupBill.handleHideButton('expense-to-pay')
 
