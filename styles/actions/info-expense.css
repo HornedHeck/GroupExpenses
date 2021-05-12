@@ -1,0 +1,50 @@
+.expense-info__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+}
+
+.expense-info__header::after {
+    content: "";
+    position: absolute;
+    top: 80%;
+    width: 100%;
+    height: 3px;
+    border-radius: 10px;
+    background-color: var(--font-color);
+}
+
+.expense-info__photo {
+    padding-bottom: 20px;
+}
+
+.expense-info__photo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.expense-info__participants {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.participant {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+}
+
+.participant_paid {
+    text-decoration: line-through;
+}
+
+.expense-info__pay {
+    width: 100px;
+    height: 30px;
+    background-color: var(--success-color);
+}

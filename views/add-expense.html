@@ -1,0 +1,54 @@
+<div class="content-wrapper card">
+    <h5 class="content-title">Add Expense</h5>
+    <form class="add-expense-form">
+        <div class="add-expense-form__field">
+            <input
+                    class="add-expense-form__input"
+                    id="expense-name"
+                    placeholder="Expense Name"
+                    required
+                    type="text"
+            />
+        </div>
+        <div class="add-expense-form__field">
+            <input
+                    class="add-expense-form__input"
+                    id="expense-overall"
+                    placeholder="Amount ($)"
+                    required
+                    type="number"
+                    value="0"
+            />
+        </div>
+        <div class="add-expense-form__field expense-photo-field">
+            <div class="expense-photo-container"></div>
+            <label class="expense-photo-label" for="expense-photo">Choose photo</label>
+            <input
+                    accept=".png, .jpg, .jpeg"
+                    class="add-expense-form__input expense-photo"
+                    id="expense-photo"
+                    type="file"
+            />
+        </div>
+        <div class="participants">
+            <div class="participants__item">
+                <input
+                        class="add-expense-form__input"
+                        id="participant-email"
+                        placeholder="Participant email"
+                        type="email"
+                />
+                <input
+                        class="add-expense-form__input"
+                        id="participant-sum"
+                        placeholder="Participant sum ($)"
+                        type="number"
+                        value="0"
+                />
+            </div>
+            <button class="add-expense-form__add-participant default-btn">Add participant</button>
+        </div>
+        <ul class="participants-list"></ul>
+        <button class="add-expense-form__sumbit default-btn" type="submit">Add expense</button>
+    </form>
+</div>

@@ -1,0 +1,17 @@
+.add-expense__button {
+    all: unset;
+    text-align: center;
+    background-color: var(--color-primary);
+    color: var(--font-color);
+    box-shadow: 0px 0px 3px var(--color-shadow);
+    padding: 10px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.add-expense__button:hover {
+    background-color: var(--font-color);
+    color: var(--color-primary);
+}
