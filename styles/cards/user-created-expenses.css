@@ -1,0 +1,97 @@
+.user-created-expenses__sum {
+    color: var(--success-color);
+    font-weight: 500;
+    font-size: min(20px , 5vw);
+    text-shadow: 0 0 1px var(--color-shadow);
+}
+
+.user-created-expenses__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-created-expenses__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 20px;
+    border-radius: 10px;
+
+    background-color: var(--color-secondary);
+    box-shadow: 0 0 5px var(--color-shadow);
+
+    font-size: min(20px , 5vw);
+    color: var(--font-color);
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+@media screen and (max-width: 1000px) {
+    .user-created-expenses__item {
+        font-size: min(18px , 4vw);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .user-created-expenses__item {
+        align-items: flex-start;
+        flex-direction: column;
+        font-size: min(16px , 3vw);
+    }
+}
+
+.user-created-expenses__item:hover {
+    transform: translateY(1px);
+    transition: 0.3s;
+}
+
+.expense-control-btn {
+    all: unset;
+
+    padding: 5px 20px;
+    border-radius: 10px;
+
+    background-color: var(--color-primary);
+    color: var(--font-color);
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.expense-control-btn:hover {
+    background-color: var(--font-color);
+    color: var(--color-primary);
+}
+
+.user-created-expenses__button-container {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 500px) {
+    .user-created-expenses__button-container {
+        margin-left: 0;
+    }
+}
+
+.user-created-expenses__show-more-btn {
+    all: unset;
+    margin-top: 20px;
+    padding: 5px 8px;
+    background-color: var(--color-primary);
+    box-shadow: 0 0 2px var(--color-shadow);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.user-created-expenses__show-more-btn:hover {
+    background-color: var(--font-color);
+    color: var(--color-primary);
+    transition: 0.3s;
+}

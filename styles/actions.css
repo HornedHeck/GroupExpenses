@@ -1,0 +1,14 @@
+@import "actions/add-expense.css";
+@import "actions/info-expense.css";
+
+.content-wrapper {
+    max-width: 700px;
+    width: 100%;
+    margin: 50px auto 0;
+    padding: 0 20px 20px;
+}
+
+.content-title {
+    font-size: min(20px , 5vw);
+    font-weight: 500;
+}

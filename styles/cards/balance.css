@@ -1,0 +1,25 @@
+.balance__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.balance {
+    font-size: min(20px , 5vw);
+    color: var(--font-color);
+}
+
+.balance__label {
+    padding: 6px 7px;
+    border-radius: 10px;
+    box-shadow: 0 0 1px var(--color-shadow);
+}
+
+.others-owe-me__label {
+    background-color: var(--success-color);
+}
+
+.my-owe__label {
+    background-color: var(--attention-color);
+}
